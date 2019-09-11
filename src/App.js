@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/loginForm'
@@ -35,13 +35,13 @@ const App = () => {
     }
   }, [])
 
-  const rows = () => blogs.map(blog => 
+  const rows = () => blogs.map(blog =>
     <Blog
       key={blog.id}
       blog={blog}
     />
   )
-
+  
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -106,33 +106,32 @@ const App = () => {
       <h1>Blogs</h1>
       <Notification message={notice} />
       <Error message={error} />
-      {user === null ? 
-      <LoginForm 
-        handleLogin={handleLogin} 
-        username={username}
-        password={password}
-        setUser={({target}) => setUsername(target.value)}
-        setPass={({target}) => setPassword(target.value)}
-      /> :
-      <ul>
-        {rows()}
-      </ul>
+      {user === null ?
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          password={password}
+          setUser={({ target }) => setUsername(target.value)}
+          setPass={({ target }) => setPassword(target.value)}
+        /> :
+        <ul>
+          {rows()}
+        </ul>
       }
       {user ?
-      <Togglable buttonLabel="Add Note">
-         <AddNew
-          addBlog={addBlog}
-          title={title}
-          setTitle={({target}) => setTitle(target.value)}
-          author={author}
-          setAuthor={({target}) => setAuthor(target.value)}
-          url={url}
-          setUrl={({target}) => setUrl(target.value)}
+        <Togglable buttonLabel="Add Note">
+          <AddNew
+            addBlog={addBlog}
+            title={title}
+            setTitle={({ target }) => setTitle(target.value)}
+            author={author}
+            setAuthor={({ target }) => setAuthor(target.value)}
+            url={url}
+            setUrl={({ target }) => setUrl(target.value)}
           />
-      </Togglable>
-
-     :
-      <p></p>
+        </Togglable>
+        :
+        <p></p>
       }
       {logout()}
     </div>
