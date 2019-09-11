@@ -6,6 +6,7 @@ import Blog from './components/Blog'
 import AddNew from './components/AddNew'
 import Notification from './components/Notification'
 import Error from './components/Error'
+import Togglable from './components/Togglable'
 
 
 const App = () => {
@@ -118,15 +119,19 @@ const App = () => {
       </ul>
       }
       {user ?
-       <AddNew
-       addBlog={addBlog}
-       title={title}
-       setTitle={({target}) => setTitle(target.value)}
-       author={author}
-       setAuthor={({target}) => setAuthor(target.value)}
-       url={url}
-       setUrl={({target}) => setUrl(target.value)}
-     /> :
+      <Togglable buttonLabel="Add Note">
+         <AddNew
+          addBlog={addBlog}
+          title={title}
+          setTitle={({target}) => setTitle(target.value)}
+          author={author}
+          setAuthor={({target}) => setAuthor(target.value)}
+          url={url}
+          setUrl={({target}) => setUrl(target.value)}
+          />
+      </Togglable>
+
+     :
       <p></p>
       }
       {logout()}

@@ -1,6 +1,6 @@
 import React from 'react'
-const Blog = ({ blog }) => (
-  <div>
+const Blog = ({ blog, handleClick }) => (
+  <div onClick={handleClick}>
     {blog.title} {blog.author}
   </div>
 )
