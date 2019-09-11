@@ -9,11 +9,23 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(
       blogs => setBlogs(blogs)
     )
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
   }, [])
 
   const rows = () => blogs.map(blog => 
@@ -29,6 +41,9 @@ const App = () => {
       const user = await loginService.login({
         username, password
       })
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -36,6 +51,38 @@ const App = () => {
     } catch (exception) {
       console.log('bad credentials')
     }
+  }
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+  }
+
+  const logout = () => {
+    if (user) {
+      return (
+        <form onSubmit={handleLogout}>
+          <button type="submit">logout</button>
+        </form>
+      )
+    }
+  }
+
+  const addBlog = async (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url,
+      likes: 0
+    }
+    console.log(blogObject)
+
+    const response = await blogService.create(blogObject)
+    setBlogs(blogs.concat(response))
+    setAuthor('')
+    setTitle('')
+    setUrl('')
   }
 
 
@@ -54,7 +101,44 @@ const App = () => {
         {rows()}
       </ul>
       }
+      {user ?
+      <div>
+        <h2>create new</h2>
+        <form onSubmit={addBlog}>
+          <div>
+            title
+          </div>
+          <input 
+            type="text"
+            value={title}
+            name="Title"
+            onChange={({target}) => setTitle(target.value)}
+          />
+          <div>
+            author
+          </div>
+          <input 
+            type="text"
+            value={author}
+            name="Author"
+            onChange={({target}) => setAuthor(target.value)}
+          />
+          <div>
+            url
+          </div>
+          <input 
+            type="text"
+            value={url}
+            name="Url"
+            onChange={({target}) => setUrl(target.value)}
+          />
+          <button type="submit">submit</button>
+        </form>
+      </div> :
+      <div></div>
+      }
 
+      {logout()}
     </div>
   )
 }
