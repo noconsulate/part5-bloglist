@@ -3,6 +3,10 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/loginForm'
 import Blog from './components/Blog'
+import AddNew from './components/AddNew'
+import Notification from './components/Notification'
+import Error from './components/Error'
+
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -12,6 +16,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notice, setNotice] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(
@@ -49,7 +55,10 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log('bad credentials')
+      setError('bad login credentials, pal')
+      setTimeout(() => {
+        setError(null)
+      }, 5000)
     }
   }
 
@@ -83,12 +92,19 @@ const App = () => {
     setAuthor('')
     setTitle('')
     setUrl('')
+    setNotice(
+      `${response.title} by ${response.author} added`
+    )
+    setTimeout(() => {
+      setNotice(null)
+    }, 5000)
   }
-
 
   return (
     <div>
       <h1>Blogs</h1>
+      <Notification message={notice} />
+      <Error message={error} />
       {user === null ? 
       <LoginForm 
         handleLogin={handleLogin} 
@@ -102,42 +118,17 @@ const App = () => {
       </ul>
       }
       {user ?
-      <div>
-        <h2>create new</h2>
-        <form onSubmit={addBlog}>
-          <div>
-            title
-          </div>
-          <input 
-            type="text"
-            value={title}
-            name="Title"
-            onChange={({target}) => setTitle(target.value)}
-          />
-          <div>
-            author
-          </div>
-          <input 
-            type="text"
-            value={author}
-            name="Author"
-            onChange={({target}) => setAuthor(target.value)}
-          />
-          <div>
-            url
-          </div>
-          <input 
-            type="text"
-            value={url}
-            name="Url"
-            onChange={({target}) => setUrl(target.value)}
-          />
-          <button type="submit">submit</button>
-        </form>
-      </div> :
-      <div></div>
+       <AddNew
+       addBlog={addBlog}
+       title={title}
+       setTitle={({target}) => setTitle(target.value)}
+       author={author}
+       setAuthor={({target}) => setAuthor(target.value)}
+       url={url}
+       setUrl={({target}) => setUrl(target.value)}
+     /> :
+      <p></p>
       }
-
       {logout()}
     </div>
   )
