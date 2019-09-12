@@ -41,7 +41,7 @@ const Blog = ({ blog, setBlogs, blogs, setError, error, user }) => {
 
   const deleteBlog = async (object) => {
     try {
-      const response = await blogService.deleteBlog(object.id)
+      await blogService.deleteBlog(object.id)
       setBlogs(blogs.filter(blog => blog.id !== object.id))
     } catch (exception) {
       const errorMessage = exception.response.data.error
