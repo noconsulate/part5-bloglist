@@ -27,7 +27,6 @@ const Blog = ({ blog, setBlogs, blogs, setError, error, user }) => {
       user: object.user._id,
       likes: object.likes +1,
     }
-    console.log(object.id)
     try {
       const response = await blogService.update(object.id, blogObj)
       setBlogs(
@@ -41,7 +40,6 @@ const Blog = ({ blog, setBlogs, blogs, setError, error, user }) => {
   }
 
   const deleteBlog = async (object) => {
-    console.log('deleteBlog()')
     try {
       const response = await blogService.deleteBlog(object.id)
       setBlogs(blogs.filter(blog => blog.id !== object.id))
