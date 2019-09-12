@@ -47,7 +47,6 @@ const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
       setBlogs(blogs.filter(blog => blog.id !== object.id))
     } catch (exception) {
       const errorMessage = exception.response.data.error
-      console.log(errorMessage)
       setError(errorMessage)
       setTimeout(() => {setError(null)}, 3000)
     }
