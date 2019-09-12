@@ -1,6 +1,7 @@
 import React from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
   const blogStyle = {
     paddigTop: 10,
     paddingLeft: 2,
@@ -15,8 +16,27 @@ const Blog = ({ blog }) => {
   const showUnexpanded = { display: expanded ? 'none' : ''}
 
   const handleClick = (event) => {
+    event.preventDefault()
     setExpanded(!expanded)
     console.log('clicked', expanded)
+  }
+
+  const handleLike = async (object) => {
+    const blogObj = {
+      title: object.title,
+      author: object.author,
+      url: object.url,
+      user: object.user._id,
+      likes: object.likes +1,
+    }
+    console.log(object.id)
+    try {
+      const response = await blogService.update(object.id, blogObj)
+      setBlogs(blogs.map(blog => blog.id !== object.id ? blog : response))
+    } catch {
+      setError('Something went wrong...')
+      setTimeout(() => {setError('something went wrong')})
+    }
   }
 
   return (
@@ -29,9 +49,8 @@ const Blog = ({ blog }) => {
         Title: {blog.title} <br />
         Author: {blog.author} <br />
         URL: {blog.url} <br />
-        Likes: {blog.likes} <button onClick={
-          ({target}) => handleLike(target)
-        }>Like!</button>
+        Likes: {blog.likes} <button onClick={(event) => handleLike(blog)}>
+          Like!</button>
         <br />
       </div>
     </div>

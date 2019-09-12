@@ -39,6 +39,10 @@ const App = () => {
     <Blog
       key={blog.id}
       blog={blog}
+      setBlogs={setBlogs}
+      blogs={blogs}
+      error={error}
+      setError={setError}
     />
   )
   
@@ -100,6 +104,8 @@ const App = () => {
       setNotice(null)
     }, 5000)
   }
+
+  
 
   return (
     <div>
