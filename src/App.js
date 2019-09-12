@@ -110,8 +110,6 @@ const App = () => {
     }, 5000)
   }
 
-  
-
   return (
     <div>
       <h1>Blogs</h1>

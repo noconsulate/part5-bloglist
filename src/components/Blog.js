@@ -11,14 +11,12 @@ const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
   }
 
   const [expanded, setExpanded] = React.useState(false)
-  console.log(expanded)
   const showExpanded = { display: expanded ? '' : 'none'}
   const showUnexpanded = { display: expanded ? 'none' : ''}
 
   const handleClick = (event) => {
     event.preventDefault()
     setExpanded(!expanded)
-    console.log('clicked', expanded)
   }
 
   const handleLike = async (object) => {
@@ -42,6 +40,19 @@ const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
     }
   }
 
+  const deleteBlog = async (object) => {
+    console.log('deleteBlog()')
+    try {
+      const response = await blogService.deleteBlog(object.id)
+      setBlogs(blogs.filter(blog => blog.id !== object.id))
+    } catch (exception) {
+      const errorMessage = exception.response.data.error
+      console.log(errorMessage)
+      setError(errorMessage)
+      setTimeout(() => {setError(null)}, 3000)
+    }
+  }
+
   return (
     <div style={blogStyle}>
       <div onClick={handleClick} style={showUnexpanded}>
@@ -55,6 +66,9 @@ const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
         Likes: {blog.likes} <button onClick={(event) => handleLike(blog)}>
           Like!</button>
         <br />
+        <button onClick={() => deleteBlog(blog)}>
+          Delete
+        </button>
       </div>
     </div>
   )
