@@ -1,7 +1,7 @@
 import React from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
+const Blog = ({ blog, setBlogs, blogs, setError, error, user }) => {
   const blogStyle = {
     paddigTop: 10,
     paddingLeft: 2,
@@ -65,9 +65,12 @@ const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
         Likes: {blog.likes} <button onClick={(event) => handleLike(blog)}>
           Like!</button>
         <br />
+        {blog.user.username === user.username ?
         <button onClick={() => deleteBlog(blog)}>
           Delete
-        </button>
+        </button> :
+        <p></p>
+        }
       </div>
     </div>
   )

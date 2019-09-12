@@ -49,6 +49,7 @@ const App = () => {
       blogs={blogs}
       error={error}
       setError={setError}
+      user={user}
     />
   )
   
