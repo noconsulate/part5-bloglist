@@ -52,11 +52,11 @@ const Blog = ({ blog, setBlogs, blogs, setError, error, user }) => {
 
   return (
     <div style={blogStyle}>
-      <div onClick={handleClick} style={showUnexpanded}>
+      <div onClick={handleClick} style={showUnexpanded} className="expandable">
         {blog.title} <br /> {blog.author}
       </div>
 
-      <div style={showExpanded}>
+      <div style={showExpanded} className="toggleContent">
         Title: {blog.title} <br />
         Author: {blog.author} <br />
         URL: {blog.url} <br />
