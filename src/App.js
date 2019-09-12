@@ -20,11 +20,17 @@ const App = () => {
   const [notice, setNotice] = useState(null)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    blogService.getAll().then(
-      blogs => setBlogs(blogs)
-    )
+  useEffect( () =>  {
+    const fetch = async () => {
+      const blogs = await blogService.getAll()
+      setBlogs(sortBlogs(blogs))
+    }
+    fetch()
   }, [])
+
+  const sortBlogs = blogs => {
+    return blogs.sort((a,b) => b.likes - a.likes)
+  }
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -90,10 +96,9 @@ const App = () => {
       url: url,
       likes: 0
     }
-    console.log(blogObject)
 
     const response = await blogService.create(blogObject)
-    setBlogs(blogs.concat(response))
+    setBlogs(sortBlogs(blogs.concat(response)))
     setAuthor('')
     setTitle('')
     setUrl('')

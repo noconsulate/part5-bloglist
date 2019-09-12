@@ -32,7 +32,10 @@ const Blog = ({ blog, setBlogs, blogs, setError, error }) => {
     console.log(object.id)
     try {
       const response = await blogService.update(object.id, blogObj)
-      setBlogs(blogs.map(blog => blog.id !== object.id ? blog : response))
+      setBlogs(
+        blogs.map(blog => blog.id !== object.id ? blog : response)
+        .sort((a, b) => b.likes - a.likes)
+        )
     } catch {
       setError('Something went wrong...')
       setTimeout(() => {setError('something went wrong')})
