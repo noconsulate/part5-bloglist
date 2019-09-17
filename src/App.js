@@ -7,11 +7,12 @@ import AddNew from './components/AddNew'
 import Notification from './components/Notification'
 import Error from './components/Error'
 import Togglable from './components/Togglable'
+import {useField} from './hooks'
 
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('text')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [title, setTitle] = useState('')
@@ -57,15 +58,15 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password
+        username: username.value, password: password.value
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      username.setField('')
+      password.setField('')
     } catch (exception) {
       setError('bad login credentials, pal')
       setTimeout(() => {
@@ -119,10 +120,10 @@ const App = () => {
       {user === null ?
         <LoginForm
           handleLogin={handleLogin}
-          username={username}
-          password={password}
-          setUser={({ target }) => setUsername(target.value)}
-          setPass={({ target }) => setPassword(target.value)}
+          username={username.value}
+          password={password.value}
+          setUser={username.onChange}
+          setPass={password.onChange}
         /> :
         <ul>
           {rows()}
