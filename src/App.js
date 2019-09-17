@@ -15,9 +15,9 @@ const App = () => {
   const password = useField('text')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const [notice, setNotice] = useState(null)
   const [error, setError] = useState(null)
 
@@ -75,6 +75,19 @@ const App = () => {
     }
   }
 
+  const handleReset = (event) => {
+    event.preventDefault()
+    username.reset()
+    password.reset()
+  }
+
+  const resetAddNew = (event) => {
+    event.preventDefault()
+    author.reset()
+    title.reset()
+    url.reset()
+  }
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
@@ -101,9 +114,9 @@ const App = () => {
 
     const response = await blogService.create(blogObject)
     setBlogs(sortBlogs(blogs.concat(response)))
-    setAuthor('')
-    setTitle('')
-    setUrl('')
+    author.setField('')
+    title.setField('')
+    url.setField('')
     setNotice(
       `${response.title} by ${response.author} added`
     )
@@ -120,6 +133,7 @@ const App = () => {
       {user === null ?
         <LoginForm
           handleLogin={handleLogin}
+          handleReset={handleReset}
           username={username.value}
           password={password.value}
           setUser={username.onChange}
@@ -133,12 +147,13 @@ const App = () => {
         <Togglable buttonLabel="Add Note">
           <AddNew
             addBlog={addBlog}
-            title={title}
-            setTitle={({ target }) => setTitle(target.value)}
-            author={author}
-            setAuthor={({ target }) => setAuthor(target.value)}
-            url={url}
-            setUrl={({ target }) => setUrl(target.value)}
+            reset={resetAddNew}
+            title={title.value}
+            setTitle={title.onChange}
+            author={author.value}
+            setAuthor={author.onChange}
+            url={url.value}
+            setUrl={url.onChange}
           />
         </Togglable>
         :

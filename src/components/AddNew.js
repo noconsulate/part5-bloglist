@@ -1,7 +1,7 @@
 import React from 'react'
 
 const SubmitNew = ({
-  addBlog, title, setTitle, author, setAuthor, url, setUrl
+  addBlog, title, setTitle, author, setAuthor, url, setUrl, reset
 }) => {
   return (
     <div>
@@ -35,6 +35,8 @@ const SubmitNew = ({
             onChange={setUrl}
           />
           <button type="submit">submit</button>
+          <br/>
+          <button onClick={reset}>reset</button>
         </form>
       </div>
   

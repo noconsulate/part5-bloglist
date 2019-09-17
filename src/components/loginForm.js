@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LoginForm = ( {handleLogin, username, password, setUser, setPass}) => {
+const LoginForm = ( {handleLogin, username, password, setUser, setPass, handleReset}) => {
   return (
    
     <form onSubmit={handleLogin}>
@@ -23,6 +23,7 @@ const LoginForm = ( {handleLogin, username, password, setUser, setPass}) => {
       />
     </div>
     <button type="submit">login</button>
+    <button onClick={handleReset}>reset</button>
   </form>
   
   )
