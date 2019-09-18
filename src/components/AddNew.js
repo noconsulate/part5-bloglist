@@ -1,7 +1,7 @@
 import React from 'react'
 
 const SubmitNew = ({
-  addBlog, title, setTitle, author, setAuthor, url, setUrl, reset
+  addBlog, title, author, url, reset
 }) => {
   return (
     <div>
@@ -11,28 +11,19 @@ const SubmitNew = ({
             title
           </div>
           <input 
-            type="text"
-            value={title}
-            name="Title"
-            onChange={setTitle}
+            {...title}
           />
           <div>
             author
           </div>
           <input 
-            type="text"
-            value={author}
-            name="Author"
-            onChange={setAuthor}
+            {...author}
           />
           <div>
             url
           </div>
           <input 
-            type="text"
-            value={url}
-            name="Url"
-            onChange={setUrl}
+            {...url}
           />
           <button type="submit">submit</button>
           <br/>

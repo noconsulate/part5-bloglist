@@ -11,13 +11,13 @@ import {useField} from './hooks'
 
 
 const App = () => {
-  const username = useField('text')
-  const password = useField('text')
+  const username = useField('text', 'Username')
+  const password = useField('text', 'Password')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const title = useField('text')
-  const author = useField('text')
-  const url = useField('text')
+  const title = useField('text', 'Title')
+  const author = useField('text', 'Author')
+  const url = useField('text', 'Url')
   const [notice, setNotice] = useState(null)
   const [error, setError] = useState(null)
 
@@ -65,8 +65,8 @@ const App = () => {
       )
       blogService.setToken(user.token)
       setUser(user)
-      username.setField('')
-      password.setField('')
+      username.onChange(null)
+      username.onChange(null)
     } catch (exception) {
       setError('bad login credentials, pal')
       setTimeout(() => {
@@ -77,15 +77,15 @@ const App = () => {
 
   const handleReset = (event) => {
     event.preventDefault()
-    username.reset()
-    password.reset()
+    username.onChange(null)
+    password.onChange(null)
   }
 
   const resetAddNew = (event) => {
     event.preventDefault()
-    author.reset()
-    title.reset()
-    url.reset()
+    author.onChange(null)
+    title.onChange(null)
+    url.onChange(null)
   }
 
   const handleLogout = () => {
@@ -106,17 +106,17 @@ const App = () => {
   const addBlog = async (event) => {
     event.preventDefault()
     const blogObject = {
-      title: title,
-      author: author,
-      url: url,
+      title: title.value,
+      author: author.value,
+      url: url.value,
       likes: 0
     }
 
     const response = await blogService.create(blogObject)
     setBlogs(sortBlogs(blogs.concat(response)))
-    author.setField('')
-    title.setField('')
-    url.setField('')
+    author.onChange(null)
+    title.onChange(null)
+    url.onChange(null)
     setNotice(
       `${response.title} by ${response.author} added`
     )
@@ -134,10 +134,8 @@ const App = () => {
         <LoginForm
           handleLogin={handleLogin}
           handleReset={handleReset}
-          username={username.value}
-          password={password.value}
-          setUser={username.onChange}
-          setPass={password.onChange}
+          username={username}
+          password={password}
         /> :
         <ul>
           {rows()}
@@ -148,12 +146,9 @@ const App = () => {
           <AddNew
             addBlog={addBlog}
             reset={resetAddNew}
-            title={title.value}
-            setTitle={title.onChange}
-            author={author.value}
-            setAuthor={author.onChange}
-            url={url.value}
-            setUrl={url.onChange}
+            title={title}
+            author={author}
+            url={url}
           />
         </Togglable>
         :
